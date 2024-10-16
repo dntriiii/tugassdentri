@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512- enacting more information about the image content, such as the icon designs or their positions within the sidebar, would be helpful to provide a more tailored code solution." alt="Font Awesome icons">
+  <title>AI Team Management Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+    }
+
+    .sidebar {
+      width: 20%;
+      background-color: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .menu {
+      list-style: none;
+    }
+
+    .menu-item {
+      margin-bottom: 20px;
+      color: #555;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .menu-item:hover {
+      background-color: #f0f0f0;
+      color: #6A4FCF;
+      padding-left: 10px;
+    }
+
+    .menu-item.active {
+      color: #000;
+      font-weight: bold;
+      background-color: #ececec;
+      border-radius: 5px;
+    }
+
+    .user-profile {
+      margin-top: 50px;
+    }
+
+    .user-name {
+      font-size: 18px;
+    }
+
+    .user-email {
+      color: #999;
+    }
+
+    .main-content {
+      width: 80%;
+      padding: 20px;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .main-content.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .upgrade-btn {
+      background-color: #6A4FCF;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .overview {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .overview-box {
+      background-color: #fff;
+      padding: 20px;
+      width: 30%;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .overview-box h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .team-performance-review {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Ensures vertical alignment */
+      margin-top: 30px;
+    }
+
+    .team-performance {
+      width: 65%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .reviews {
+      width: 30%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .reviews ul {
+      list-style: none;
+    }
+
+    .manage-btn {
+      background-color: #6A4FCF;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+
+    .departments {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .department-box {
+      background-color: #fff;
+      padding: 20px;
+      width: 30%;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .reviews ul {
+  list-style: none; /* Menghilangkan bullet point pada daftar */
+  padding: 0; /* Menghilangkan padding default */
+}
+
+.reviews li {
+  display: flex; /* Menjadikan item daftar sebagai flex container */
+  align-items: center; /* Menyusun item secara vertikal */
+  margin-bottom: 15px; /* Memberikan jarak antara item */
+}
+
+.profile-img {
+  width: 40px; /* Ukuran gambar profil */
+  height: 40px; /* Ukuran gambar profil */
+  border-radius: 50%; /* Membuat gambar berbentuk lingkaran */
+  margin-right: 10px; /* Memberikan jarak antara gambar dan teks */
+  border: 2px solid #6A4FCF; /* Menambahkan border untuk gambar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan untuk efek depth */
+}
+
+.manage-btn {
+  margin-top: 20px; /* Memberikan jarak atas pada tombol */
+  background-color: #6A4FCF; /* Warna latar belakang tombol */
+  color: white; /* Warna teks tombol */
+  border: none; /* Menghilangkan border default */
+  padding: 10px 20px; /* Padding tombol */
+  border-radius: 5px; /* Sudut membulat pada tombol */
+  cursor: pointer; /* Menjadikan kursor pointer saat hover */
+  transition: background-color 0.3s; /* Transisi saat hover */
+}
+
+.manage-btn:hover {
+  background-color: #5B3EBA; /* Warna latar belakang tombol saat hover */
+}
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Bonita</div>
+    <ul class="menu">
+      <li class="menu-item active" data-page="home"><i class="fas fa-home"></i> Home</li>
+      <li class="menu-item" data-page="teams"><i class="fas fa-users"></i> Teams</li>
+      <li class="menu-item" data-page="goals"><i class="fas fa-flag"></i> Goals</li>
+      <li class="menu-item" data-page="private-tasks"><i class="fas fa-lock"></i> Private tasks</li>
+      <li class="menu-item" data-page="analytics"><i class="fas fa-chart-line"></i> Analytics</li>
+      <li class="menu-item" data-page="documents"><i class="fas fa-file-alt"></i> Documents</li>
+      <li class="menu-item" data-page="settings"><i class="fas fa-cog"></i> Settings</li>
+    </ul>
+    <div class="user-profile">
+      <div class="user-name">Dentriii</div>
+      <div class="user-email">Dentri@gmail.com</div>
+    </div>
+  </div>
+  
+  <div class="main-content" id="home">
+    <header>
+      <h1>AI Team Management</h1>
+      <button class="upgrade-btn">Upgrade plan</button>
+    </header>
+    <section class="overview">
+      <div class="overview-box">
+        <h2>Efficiency</h2>
+        <p class="efficiency">87%</p>
+        <div class="team-select">Dev team</div>
+      </div>
+      <div class="overview-box">
+        <h2>Tasks this week</h2>
+        <p>15</p>
+        <div class="performance-review">Performance review <span>35% left</span></div>
+      </div>
+      <div class="overview-box">
+        <h2>Online time per day</h2>
+        <p>9.2h</p>
+        <p class="change">Increased compared to last week</p>
+      </div>
+    </section>
+    
+    <section class="team-performance-review">
+      <div class="team-performance">
+        <h2>Team performance</h2>
+        <canvas id="performanceChart"></canvas>
+      </div>
+      <div class="reviews">
+        <h2>Need review</h2>
+        <ul>
+          <li>
+            <img src="den1.jpg" alt="Wade Warren" class="profile-img">
+            Wade Warren (Marketing coordinator)
+          </li>
+          <li>
+            <img src="den2.jpg" alt="Jakob Jones" class="profile-img">
+            Jakob Jones (Web designer)
+          </li>
+          <li>
+            <img src="den3.jpg" alt="Leslie Wonderwid" class="profile-img">
+            Leslie Wonderwid (PM manager)
+          </li>
+        </ul>
+        <button class="manage-btn">Manage personal</button>
+      </div>
+      
+    </section>
+    
+    <section class="departments">
+      <h2>Departments</h2>
+      <div class="department-box">Visual - UI designers</div>
+      <div class="department-box">Accounting - Sales</div>
+      <div class="department-box">Content - SEO</div>
+    </section>
+  </div>
+
+  <!-- Other Pages (hidden initially) -->
+  <div class="main-content hidden" id="teams">
+    <h1>Teams Page</h1>
+    <!-- Teams content here -->
+  </div>
+
+  <div class="main-content hidden" id="goals">
+    <h1>Goals Page</h1>
+    <!-- Goals content here -->
+  </div>
+
+  <div class="main-content hidden" id="private-tasks">
+    <h1>Private Tasks Page</h1>
+    <!-- Private Tasks content here -->
+  </div>
+
+  <div class="main-content hidden" id="analytics">
+    <h1>Analytics Page</h1>
+    <!-- Analytics content here -->
+  </div>
+
+  <div class="main-content hidden" id="documents">
+    <h1>Documents Page</h1>
+    <!-- Documents content here -->
+  </div>
+
+  <div class="main-content hidden" id="settings">
+    <h1>Settings Page</h1>
+    <!-- Settings content here -->
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    // Team performance chart
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Winter', 'Spring', 'Summer', 'Autumn'],
+        datasets: [
+          {
+            label: 'Dev team',
+            data: [30, 50, 87, 60],
+            backgroundColor: 'rgba(106, 79, 207, 0.2)',
+            borderColor: '#6A4FCF',
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Design team',
+            data: [40, 45, 65, 80],
+            backgroundColor: 'rgba(180, 160, 255, 0.2)',
+            borderColor: '#B4A0FF',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 25
+            }
+          }
+        }
+      }
+    });
+
+    // Navigation and Animations
+    const menuItems = document.querySelectorAll('.menu-item');
+    const pages = document.querySelectorAll('.main-content');
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove active class from all menu items
+        menuItems.forEach(i => i.classList.remove('active'));
+        // Add active class to clicked menu item
+        this.classList.add('active');
+
+        // Hide all pages
+        pages.forEach(page => page.classList.add('hidden'));
+        pages.forEach(page => page.classList.remove('active'));
+
+        // Show the selected page with animation
+        const pageId = this.getAttribute('data-page');
+        const selectedPage = document.getElementById(pageId);
+        selectedPage.classList.remove('hidden');
+        setTimeout(() => selectedPage.classList.add('active'), 10);
+      });
+    });
+  </script>
+</body>
+</html>
